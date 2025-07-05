@@ -13,49 +13,53 @@ In India, over 250 million people struggle with basic literacy, making it diffic
 
 **SathiSwar (ସାଥୀ ସ୍ୱର)** is a lightweight voice-based GenAI assistant that:
 
-- Accepts spoken queries in Hindi, Odia, or other regional languages  
-- Converts voice to text via Whisper or Vosk  
-- Sends the transcription to GPT-style LLMs via OpenRouter  
-- Converts the AI's response back to speech using Google TTS or Coqui  
-- Replies to the user in their native language using audio—no screen or typing required
+- Accepts spoken queries in Odia, Hindi, or other regional languages  
+- Converts voice to text using **Sarvam.ai STT API**  
+- Sends the transcription to powerful **GPT-style LLMs** via **OpenRouter**  
+- Converts the AI's Odia text response back to speech via **Sarvam.ai TTS API**  
+- Replies to the user in Odia using audio—no need for typing, reading, or screens  
+
+> 🎯 The experience feels like talking to a helpful human assistant — in your own language.
 
 ---
 
 ## 🧩 Tech Stack
 
-| Layer              | Tool Used                    |
-|-------------------|------------------------------|
-| Speech-to-Text     | Whisper (OpenAI) / Vosk       |
-| AI Reasoning       | OpenRouter (GPT-style models) |
-| Text-to-Speech     | Google Cloud TTS / Coqui TTS  |
-| Backend Server     | Python + Flask                |
-| Frontend           | HTML + JavaScript / WhatsApp Bot |
-| Hosting            | Replit / Render / GitHub Pages|
+| Layer              | Tool Used                         |
+|-------------------|-----------------------------------|
+| Speech-to-Text     | Sarvam.ai (saarika:v2.5)           |
+| AI Reasoning       | OpenRouter (e.g. sarvam-m LLM)     |
+| Text-to-Speech     | Sarvam.ai (bulbul:v2)              |
+| Backend Server     | Python + Flask                     |
+| Frontend           | HTML, CSS, JavaScript (no canvas)  |
+| Hosting (optional) | Render / Replit / Localhost        |
 
 ---
 
 ## 🛠️ Architecture Overview
-```
-[User Voice Input] 
-        ↓ 
-Speech Recognition (Whisper/Vosk)
-        ↓ 
-LLM via OpenRouter API 
-        ↓ 
-Text-to-Speech Conversion 
-        ↓ 
-[Voice Output in Regional Language]
 
 ```
+  [🎙 User Voice Input]
+          ↓
+📥 Speech-to-Text (Sarvam.ai)
+          ↓
+🧠 LLM Processing (OpenRouter API)
+          ↓
+ 📤 Text-to-Speech (Sarvam.ai)
+          ↓
+ [🔊 Voice Reply in Odia]
+```
+
+
 ---
 
 ## 🗺️ Use Case Demo
 
-👩‍🌾 **User says:**  
-> “Ration card kaise milega?”
+👩‍🌾 **User says (in Odia):**  
+> “ରାସନ୍ କାର୍ଡ କିପରି ମିଳିବ?”
 
-🤖 **SathiSwar replies:**  
-> “Aapko ration card ke liye gram panchayat mein form bharna hoga ya online bhi apply kar sakte hain…”
+🤖 **SathiSwar replies (in Odia):**  
+> “ରାସନ୍ କାର୍ଡ ପାଇଁ ଆପଣ ଗ୍ରାମ ପଞ୍ଚାୟତ କିମ୍ବା ଓନଲାଇନରେ ଆବେଦନ କରିପାରିବେ…”
 
 🎥 [Watch Demo Video](https://your-youtube-demo-link.com)
 
@@ -63,56 +67,95 @@ Text-to-Speech Conversion
 
 ## 💡 Social Impact
 
-**SathiSwar** bridges a digital accessibility gap by giving voice-based access to critical services for:
-- Rural elders with little to no digital literacy  
-- Women and first-time mobile users  
-- Visually impaired or speech-limited users (coming soon)  
-- Vernacular populations needing government/civic support
+**SathiSwar** bridges India’s digital accessibility gap by enabling:
+
+- 📱 Rural elders with no digital literacy  
+- 👩‍🦱 Women and first-time smartphone users  
+- 👀 Visually impaired users (TTS-only mode coming soon)  
+- 🗣️ Vernacular users needing civic/government support  
+
+All without typing or reading — just through conversation in their own language.
 
 ---
 
 ## 🧑‍🤝‍🧑 Team Members
 
-- **Sibasish Mallick** – Voice Input Integration & Architecture, AI API Orchestration (OpenRouter)  
-- **Mallika Kaur Kalha** – TTS Voice Design & Frontend Testing  
-- **Khitish Routray** – UI/UX Workflow + Docs & Demo Recording
+- **Sibasish Mallick** – Backend Architecture, Voice Input Integration, AI Orchestration (OpenRouter)  
+- **Mallika Kaur Kalha** – Odia Voice Design, Frontend Integration, Usability Testing  
+- **Khitish Routray** – UI/UX Design, Workflow Diagrams, Demo Recording & Documentation  
 
 ---
 
-
 ## 🚀 How to Run the Project
-```
+
+```bash
 # 1. Clone the repo
 git clone https://github.com/your-team/sathiswar.git
 cd sathiswar
 
-# 2. Set up dependencies
+# 2. Set up virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+# 3. Install required Python packages
 pip install -r requirements.txt
 
-# 3. Add your API keys in `.env` file
+# 4. Add your API keys in `.env` file
 # Example:
 # OPENROUTER_API_KEY=your_openrouter_key
-# GOOGLE_TTS_KEY=your_google_cloud_key
+# SARVAM_API_KEY=your_sarvam_api_key
 
-# 4. Run the app
+# 5. Run the app
 python app.py
-
 ```
 
-📘 Repo Contents
+📘 Repo Structure
 ```
 sathiswar/
-├── app.py
-├── requirements.txt
-├── .env.example
-├── /templates
-│   └── index.html
-├── /utils
-│   ├── speech_to_text.py
-│   ├── call_llm.py
-│   └── text_to_speech.py
-└── /test
-    └── test_pipeline.py
+├── app.py                       # Main Flask application
+├── requirements.txt             # Python dependencies
+├── .env.example                 # Example environment variables
+│
+├── /templates/
+│   └── index.html               # Frontend HTML UI
+│
+├── /static/
+│   ├── style.css                # Stylesheet for chat UI
+│   ├── script.js                # JavaScript for mic and chat logic
+│   └── images/                  # Logos, icons, and media
+│
+├── /utils/
+│   ├── call_llm.py              # Connects to OpenRouter for LLM response
+│   ├── speech_to_text.py        # Sarvam.ai STT transcription
+│   └── text_to_speech.py        # Sarvam.ai TTS voice generation
+│
+├── /uploads/
+│   └── sample_odia.wav          # Sample file for testing STT
+│
+└── /test/
+    └── test_sample.py           # CLI test script for STT → LLM → TTS
 ```
 
-“With SathiSwar, we’re not just building an app—we’re building an audible bridge to digital India.” 🇮🇳✨
+🔒 Environment Configuration
+```
+OPENROUTER_API_KEY=your_openrouter_api_key
+SARVAM_API_KEY=your_sarvam_ai_api_key
+
+```
+
+## Key Highlights
+✅ Works completely via speech — ideal for illiterate users
+✅ Designed with Indian regional languages in mind (currently focused on Odia)
+✅ Lightweight architecture and no heavy dependencies
+✅ Modular and testable backend with plug-and-play APIs
+✅ Professional frontend UI with dark/light mode and speech bubbles
+
+## Future Roadmap
+🔁 Add multi-language auto-detection
+📞 Deploy as a WhatsApp voice bot
+📱 Package as an Android APK or PWA
+🧑‍🦯 Enable screen reader compatibility and voice-only workflows
+🌐 Add support for more civic/government services
+
+🗣️ “With SathiSwar, we’re not just building an app—we’re building an audible bridge to digital India.” 🇮🇳✨
+
